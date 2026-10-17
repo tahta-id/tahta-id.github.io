@@ -132,6 +132,8 @@
     color: var(--accent); font-weight: 600; text-decoration: none;
   }
   .project-link:hover { text-decoration: underline; }
+  .project-links { margin-top: auto; display: flex; flex-wrap: wrap; gap: 4px 24px; }
+  .project-links .project-link { margin-top: 0; }
 
   /* ---------- PENGALAMAN & PENDIDIKAN ---------- */
   .exp-wrap { display: flex; flex-direction: column; gap: 40px; }
@@ -367,7 +369,10 @@
           <div class="case-label">HASIL</div>
           <p class="case-text">Silhouette 0,358 &middot; Davies-Bouldin 0,84 &middot; Calinski-Harabasz 905,9. Cluster 2 (12 wilayah) memiliki rasio pendidik terhadap peserta didik 3,06 — sekitar 7–10 kali cluster lain — dan menjadi temuan utama untuk penelaahan pemerataan pendidik.</p>
         </div>
-        <a class="project-link" href="https://github.com/tahta-id/Project-tahta" target="_blank" rel="noopener">Lihat di GitHub &rarr;</a>
+        <div class="project-links">
+          <a class="project-link" href="dashboard.html">Lihat tampilan dashboard &rarr;</a>
+          <a class="project-link" href="https://github.com/tahta-id/Project-tahta" target="_blank" rel="noopener">Kode di GitHub &rarr;</a>
+        </div>
       </article>
 
       <article class="project-card">
