@@ -44,6 +44,18 @@
   .nav-links a { color: #C9D4E3; text-decoration: none; }
   .nav-links a:hover { color: #FFFFFF; }
 
+  /* Tombol hamburger (hanya tampil di mobile) */
+  .nav-toggle {
+    display: none;
+    flex-direction: column; justify-content: center; align-items: center; gap: 4px;
+    width: 44px; height: 44px; padding: 0;
+    background: transparent; border: 1px solid #4A6285; border-radius: 10px;
+    cursor: pointer;
+  }
+  .nav-toggle span { display: block; width: 20px; height: 2px; background: #C9D4E3; border-radius: 2px; }
+  .nav-toggle:hover, .nav-toggle[aria-expanded="true"] { border-color: #7FDDE5; }
+  .nav-toggle:hover span, .nav-toggle[aria-expanded="true"] span { background: #7FDDE5; }
+
   .hero-inner {
     padding: 64px 24px 96px;
     display: flex; flex-wrap: wrap; align-items: center; gap: 56px;
@@ -152,7 +164,19 @@
     /* Navigasi: rapatkan agar tidak berantakan di layar sempit */
     .nav { padding: 16px 20px; gap: 10px; }
     .brand { font-size: 16px; }
-    .nav-links { gap: 6px 18px; font-size: 14px; }
+    .nav-toggle { display: inline-flex; }
+    .nav-links {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      gap: 0;
+      font-size: 15px;
+      padding: 6px 0 2px;
+      border-top: 1px solid #24395A;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { padding: 13px 2px; border-bottom: 1px solid rgba(36, 57, 90, 0.55); }
+    .nav-links a:last-child { border-bottom: none; }
 
     /* Hero: kurangi padding & ukuran judul */
     .hero-inner { padding: 40px 20px 64px; gap: 36px; }
@@ -204,7 +228,7 @@
   /* ---------- RESPONSIF: PONSEL KECIL (<= 380px) ---------- */
   @media (max-width: 380px) {
     .hero h1 { font-size: 28px; }
-    .nav-links { gap: 6px 14px; font-size: 13.5px; }
+    .nav-links a { font-size: 14px; }
     .contact-actions .btn { font-size: 13.5px; }
   }
 </style>
@@ -215,7 +239,10 @@
 <header class="hero">
   <nav class="container nav">
     <a class="brand" href="#atas">Arraihan Tahta Ainullah</a>
-    <div class="nav-links">
+    <button class="nav-toggle" type="button" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="menu-nav">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="menu-nav">
       <a href="#tentang">Tentang</a>
       <a href="#keahlian">Keahlian</a>
       <a href="#proyek">Proyek</a>
@@ -437,6 +464,34 @@
 </section>
 
 <footer>&copy; 2026 Arraihan Tahta Ainullah. Dibangun dengan data dan kopi.</footer>
+
+<script>
+  (function () {
+    var toggle = document.querySelector('.nav-toggle');
+    var menu = document.getElementById('menu-nav');
+    if (!toggle || !menu) return;
+
+    function setState(open) {
+      menu.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.setAttribute('aria-label', open ? 'Tutup menu navigasi' : 'Buka menu navigasi');
+    }
+
+    toggle.addEventListener('click', function () {
+      setState(!menu.classList.contains('open'));
+    });
+
+    // Tutup menu otomatis setelah link diklik
+    menu.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setState(false);
+    });
+
+    // Tutup menu saat layar diperbesar ke desktop
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 640) setState(false);
+    });
+  })();
+</script>
 
 </body>
 </html>
