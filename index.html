@@ -146,6 +146,67 @@
     padding: 24px; background: #0A1424; color: #9FB3CE;
     font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-align: center;
   }
+
+  /* ---------- RESPONSIF: TABLET KECIL & PONSEL (<= 640px) ---------- */
+  @media (max-width: 640px) {
+    /* Navigasi: rapatkan agar tidak berantakan di layar sempit */
+    .nav { padding: 16px 20px; gap: 10px; }
+    .brand { font-size: 16px; }
+    .nav-links { gap: 6px 18px; font-size: 14px; }
+
+    /* Hero: kurangi padding & ukuran judul */
+    .hero-inner { padding: 40px 20px 64px; gap: 36px; }
+    .hero h1 { font-size: clamp(30px, 8.5vw, 40px); }
+    .hero-lede { font-size: 17px; }
+    .hero-actions .btn { padding: 0 20px; }
+    .hero-card { padding: 20px; }
+
+    /* Section umum */
+    .section { padding: 56px 20px; }
+    .section-title { font-size: 28px; }
+
+    /* Tentang: foto ikut lebar layar, rasio tetap */
+    .about-grid { gap: 28px; }
+    .about-photo {
+      flex: 1 1 100%; width: 100%; max-width: 320px;
+      height: auto; aspect-ratio: 6 / 7;
+    }
+    .about-text p { font-size: 17px; }
+    .about-text .meta { font-size: 15px; }
+
+    /* Keahlian */
+    .skills-wrap { gap: 32px; }
+    .skills-grid { gap: 22px; }
+
+    /* Proyek */
+    .projects-wrap { gap: 32px; }
+    .projects-sub { font-size: 16px; }
+    .projects-grid { gap: 20px; }
+    .project-card { padding: 22px; }
+    .project-card h3 { font-size: 20px; }
+    .case-text { font-size: 15px; }
+
+    /* Pengalaman */
+    .exp-wrap { gap: 32px; }
+    .exp-row { gap: 8px 24px; }
+    .exp-date { font-size: 13px; }
+    .exp-body ul, .exp-body p { font-size: 15px; }
+
+    /* Kontak: tombol full-width agar mudah disentuh */
+    .contact { padding: 72px 20px; }
+    .contact p { font-size: 17px; }
+    .contact-actions { width: 100%; }
+    .contact-actions .btn { width: 100%; justify-content: center; padding: 0 16px; font-size: 15px; }
+
+    footer { padding: 20px; }
+  }
+
+  /* ---------- RESPONSIF: PONSEL KECIL (<= 380px) ---------- */
+  @media (max-width: 380px) {
+    .hero h1 { font-size: 28px; }
+    .nav-links { gap: 6px 14px; font-size: 13.5px; }
+    .contact-actions .btn { font-size: 13.5px; }
+  }
 </style>
 </head>
 <body>
