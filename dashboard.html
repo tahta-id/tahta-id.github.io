@@ -131,6 +131,36 @@
   .step-body h3 { font-family: 'Sora', sans-serif; font-weight: 600; font-size: 17px; }
   .step-body p { font-size: 15px; color: var(--muted-2); }
 
+  /* ---------- EKSPLORASI DATA ---------- */
+  .data-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .input-search {
+    flex: 1 1 260px; min-width: 0; height: 44px; padding: 0 14px;
+    border: 1px solid #DCE2EA; border-radius: 10px;
+    font: inherit; font-size: 15px; background: #FFFFFF; color: var(--ink);
+  }
+  .input-search:focus { outline: 2px solid var(--cyan); outline-offset: 0; border-color: var(--accent); }
+  .filter-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filter-btn {
+    height: 40px; padding: 0 14px; border-radius: 999px;
+    border: 1px solid #DCE2EA; background: #FFFFFF; color: var(--muted-2);
+    font: inherit; font-size: 14px; cursor: pointer;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+  .btn-outline { border: 1px solid var(--accent); color: var(--accent); font-weight: 600; }
+  .btn-sm { height: 40px; padding: 0 18px; font-size: 14px; }
+  .chip-hot { background: #FFF4E5; border-color: #F0D5A8; color: #9A6700; }
+  .data-foot { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+  .data-info { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--muted); }
+  .pager { display: flex; gap: 8px; }
+  .pager-btn {
+    height: 40px; padding: 0 16px; border-radius: 10px;
+    border: 1px solid #DCE2EA; background: #FFFFFF; color: var(--muted-2);
+    font: inherit; font-size: 14px; cursor: pointer;
+  }
+  .pager-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .pager-btn:disabled { opacity: 0.45; cursor: default; }
+
   /* ---------- CTA ---------- */
   .cta { padding: 80px 24px; background: var(--ink); color: #FFFFFF; }
   .cta-inner { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
@@ -190,6 +220,10 @@
     .step { gap: 14px; padding: 16px 0; }
     .step-body h3 { font-size: 16px; }
     .step-body p { font-size: 14.5px; }
+
+    .input-search { flex: 1 1 100%; }
+    .data-foot { justify-content: center; }
+    .pager-btn { padding: 0 12px; font-size: 13px; }
 
     .cta { padding: 64px 20px; }
     .cta-actions { width: 100%; }
@@ -344,12 +378,54 @@
         </tbody>
       </table>
     </div>
-    <p class="table-note">Catatan: Rasio S/KS dan Persentase KS bernilai sama di seluruh wilayah (1,0 dan 100%) sehingga tidak memisahkan cluster; pemisahan didorong oleh rasio S/P dan P/PD. Total wilayah: 90 + 752 + 12 + 675 = 1.529.</p>
+    <p class="table-note">Catatan: Rasio S/KS dan Persentase KS bernilai sama di seluruh wilayah (1,0 dan 100%) sehingga tidak memisahkan cluster; pemisahan didorong oleh rasio S/P dan P/PD. Total: 90 + 752 + 12 + 675 = 1.529 baris. Cluster 2 berisi 12 baris data dari 11 kabupaten/kota (KAB. INTAN JAYA tercatat dua baris).</p>
+  </div>
+</section>
+
+<!-- EKSPLORASI DATA -->
+<section class="section section-alt">
+  <div class="container stack">
+    <div class="stack" style="gap: 10px">
+      <h2 class="section-title">Eksplorasi data</h2>
+      <p class="section-sub">Seluruh 1.529 baris hasil clustering dari <em>Dataset 2025.xlsx</em> (Kemendikdasmen). Cari wilayah atau saring per cluster, lalu unduh hasilnya sebagai CSV.</p>
+    </div>
+
+    <div class="data-controls">
+      <input id="data-search" class="input-search" type="search" placeholder="Cari kota/kabupaten — mis. ACEH, SIMEULUE, INTAN JAYA…" aria-label="Cari kota/kabupaten">
+      <div class="filter-group" id="data-filters" role="group" aria-label="Saring per cluster"></div>
+      <a class="btn btn-outline btn-sm" href="assets/hasil-clustering.csv" download>Unduh CSV &darr;</a>
+    </div>
+
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Kota/Kab</th>
+            <th>Rasio S/KS</th>
+            <th>Rasio S/P</th>
+            <th>Rasio P/PD</th>
+            <th>KS (%)</th>
+            <th>Cluster</th>
+          </tr>
+        </thead>
+        <tbody id="data-body"></tbody>
+      </table>
+    </div>
+
+    <div class="data-foot">
+      <span class="data-info" id="data-info">Memuat data…</span>
+      <div class="pager">
+        <button class="pager-btn" id="data-prev" type="button">&larr; Sebelumnya</button>
+        <button class="pager-btn" id="data-next" type="button">Berikutnya &rarr;</button>
+      </div>
+    </div>
+
+    <p class="table-note">Dihitung ulang langsung dari dataset dengan pipeline yang sama seperti notebook (StandardScaler + K-Means k = 4, random_state = 42) — hasilnya identik dengan ringkasan di atas.</p>
   </div>
 </section>
 
 <!-- ALUR ANALISIS -->
-<section class="section section-alt">
+<section class="section">
   <div class="container stack">
     <div class="stack" style="gap: 10px">
       <h2 class="section-title">Alur analisis</h2>
@@ -408,6 +484,71 @@
 </section>
 
 <footer>&copy; 2026 Arraihan Tahta Ainullah. Dibangun dengan data dan kopi.</footer>
+
+<script src="assets/data-clustering.js"></script>
+<script>
+  (function () {
+    var DATA = (typeof CLUSTER_DATA !== 'undefined') ? CLUSTER_DATA : [];
+    var body = document.getElementById('data-body');
+    if (!body || !DATA.length) return;
+    var info = document.getElementById('data-info');
+    var prev = document.getElementById('data-prev');
+    var next = document.getElementById('data-next');
+    var search = document.getElementById('data-search');
+    var filters = document.getElementById('data-filters');
+    var PAGE = 50;
+    var state = { q: '', cluster: 'all', page: 1 };
+
+    function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+    function fmt(n, d) { return n.toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d }); }
+
+    function filtered() {
+      var q = state.q.toUpperCase();
+      return DATA.filter(function (r) {
+        return (!q || r[0].toUpperCase().indexOf(q) !== -1) && (state.cluster === 'all' || r[5] === state.cluster);
+      });
+    }
+
+    function render() {
+      var rows = filtered();
+      var pages = Math.max(1, Math.ceil(rows.length / PAGE));
+      if (state.page > pages) state.page = pages;
+      var start = (state.page - 1) * PAGE;
+      var slice = rows.slice(start, start + PAGE);
+      body.innerHTML = slice.map(function (r) {
+        return '<tr><td>' + esc(r[0]) + '</td><td>' + fmt(r[1], 3) + '</td><td>' + fmt(r[2], 4) + '</td><td>' + fmt(r[3], 3) + '</td><td>' + fmt(r[4], 1) + '</td><td><span class="chip' + (r[5] === 2 ? ' chip-hot' : '') + '">' + r[5] + '</span></td></tr>';
+      }).join('') || '<tr><td colspan="6">Tidak ada wilayah yang cocok dengan pencarian.</td></tr>';
+      info.textContent = 'Menampilkan ' + (rows.length ? start + 1 : 0) + '–' + (start + slice.length) + ' dari ' + rows.length.toLocaleString('id-ID') + ' baris';
+      prev.disabled = state.page <= 1;
+      next.disabled = state.page >= pages;
+    }
+
+    var counts = { all: DATA.length };
+    DATA.forEach(function (r) { counts[r[5]] = (counts[r[5]] || 0) + 1; });
+    var defs = [['all', 'Semua'], [0, 'C0'], [1, 'C1'], [2, 'C2'], [3, 'C3']];
+    filters.innerHTML = defs.map(function (d) {
+      return '<button type="button" class="filter-btn' + (d[0] === 'all' ? ' active' : '') + '" data-cluster="' + d[0] + '">' + d[1] + ' (' + counts[d[0]].toLocaleString('id-ID') + ')</button>';
+    }).join('');
+    filters.addEventListener('click', function (e) {
+      var b = e.target.closest('.filter-btn');
+      if (!b) return;
+      state.cluster = b.dataset.cluster === 'all' ? 'all' : parseInt(b.dataset.cluster, 10);
+      state.page = 1;
+      Array.prototype.forEach.call(filters.querySelectorAll('.filter-btn'), function (x) { x.classList.toggle('active', x === b); });
+      render();
+    });
+
+    var timer = null;
+    search.addEventListener('input', function () {
+      clearTimeout(timer);
+      timer = setTimeout(function () { state.q = search.value.trim(); state.page = 1; render(); }, 150);
+    });
+    prev.addEventListener('click', function () { if (state.page > 1) { state.page--; render(); } });
+    next.addEventListener('click', function () { state.page++; render(); });
+
+    render();
+  })();
+</script>
 
 <script>
   (function () {
