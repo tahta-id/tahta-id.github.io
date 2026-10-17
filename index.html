@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portofolio Data Science — Arraihan Tahta Ainullah</title>
+<meta name="description" content="Portofolio Arraihan Tahta Ainullah — data science & machine learning: K-Means clustering pendidikan, SVM vs XGBoost, dan dashboard interaktif berbasis Streamlit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --accent: #0B6E79;      /* aksen teal untuk label & link */
+    --cyan: #7FDDE5;        /* aksen terang di area gelap */
+    --ink: #0F1B2D;         /* warna teks utama & latar gelap */
+    --muted: #4A5870;
+    --muted-2: #2B3A52;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #F5F7FA;
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* ---------- HERO ---------- */
+  .hero { background: var(--ink); color: #FFFFFF; }
+
+  .nav {
+    padding: 20px 24px;
+    display: flex; flex-wrap: wrap; align-items: center;
+    justify-content: space-between; gap: 16px;
+  }
+  .brand { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 18px; color: #FFFFFF; text-decoration: none; }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 15px; }
+  .nav-links a { color: #C9D4E3; text-decoration: none; }
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .hero-inner {
+    padding: 64px 24px 96px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 56px;
+  }
+  .hero-text { flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
+  .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 14px; letter-spacing: 0.12em; color: var(--cyan); }
+  .hero h1 {
+    font-family: 'Sora', sans-serif; font-weight: 700;
+    font-size: clamp(36px, 5vw, 62px); line-height: 1.1; color: #FFFFFF;
+  }
+  .hero-lede { font-size: 18px; max-width: 560px; color: #C9D4E3; }
+
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; padding-top: 8px; }
+  .btn {
+    display: inline-flex; align-items: center;
+    height: 48px; padding: 0 26px; border-radius: 10px;
+    font-weight: 600; text-decoration: none;
+  }
+  .btn-primary { background: var(--cyan); color: var(--ink); }
+  .btn-ghost { border: 1px solid #4A6285; color: #FFFFFF; font-weight: 500; }
+
+  .hero-card {
+    flex: 1 1 320px; max-width: 460px; min-width: 0;
+    background: #16263D; border: 1px solid #24395A; border-radius: 16px;
+    padding: 28px; display: flex; flex-direction: column; gap: 16px;
+  }
+  .hero-card svg { display: block; width: 100%; }
+  .hero-card-caption { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #9FB3CE; }
+
+  /* ---------- SECTION UMUM ---------- */
+  .section { padding: 88px 24px; }
+  .section-alt { background: #FFFFFF; border-top: 1px solid #DCE2EA; border-bottom: 1px solid #DCE2EA; }
+  .section-title { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 34px; line-height: 1.2; }
+
+  /* ---------- TENTANG ---------- */
+  .about-grid { display: flex; flex-wrap: wrap; gap: 56px; align-items: flex-start; }
+  .about-photo {
+    flex: 0 0 240px; width: 240px; height: 280px;
+    border-radius: 16px; background: #E1E8F0; border: 1px solid #DCE2EA;
+    object-fit: cover; object-position: center top;
+  }
+  .about-text { flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+  .about-text p { font-size: 18px; color: var(--muted-2); }
+  .about-text .meta { font-size: 16px; color: var(--muted); }
+
+  /* ---------- KEAHLIAN ---------- */
+  .skills-wrap { display: flex; flex-direction: column; gap: 40px; }
+  .skills-grid { display: flex; flex-wrap: wrap; gap: 24px; }
+  .skill-group { flex: 1 1 250px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+  .skill-label { font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: var(--accent); }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    padding: 6px 14px; border-radius: 999px;
+    background: #E8F1F2; border: 1px solid #CFE0E2; font-size: 14px;
+  }
+
+  /* ---------- PROYEK ---------- */
+  .projects-wrap { display: flex; flex-direction: column; gap: 40px; }
+  .projects-head { display: flex; flex-direction: column; gap: 10px; }
+  .projects-sub { font-size: 18px; color: var(--muted); max-width: 640px; }
+  .projects-grid { display: flex; flex-wrap: wrap; gap: 24px; }
+  .project-card {
+    flex: 1 1 340px; min-width: 0;
+    background: #FFFFFF; border: 1px solid #DCE2EA; border-radius: 16px;
+    padding: 28px; display: flex; flex-direction: column; gap: 18px;
+  }
+  .project-tools { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--muted); }
+  .project-card h3 { font-family: 'Sora', sans-serif; font-weight: 600; font-size: 22px; line-height: 1.3; }
+  .case-block { display: flex; flex-direction: column; gap: 4px; }
+  .case-label { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: var(--accent); }
+  .case-text { font-size: 16px; color: var(--muted-2); }
+  .project-link {
+    margin-top: auto; display: inline-flex; align-items: center; min-height: 44px;
+    color: var(--accent); font-weight: 600; text-decoration: none;
+  }
+  .project-link:hover { text-decoration: underline; }
+
+  /* ---------- PENGALAMAN & PENDIDIKAN ---------- */
+  .exp-wrap { display: flex; flex-direction: column; gap: 40px; }
+  .exp-list { display: flex; flex-direction: column; gap: 32px; }
+  .exp-row {
+    display: flex; flex-wrap: wrap; gap: 12px 40px;
+    padding-top: 24px; border-top: 1px solid #DCE2EA;
+  }
+  .exp-date { flex: 0 0 200px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--muted); }
+  .exp-body { flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+  .exp-body h3 { font-family: 'Sora', sans-serif; font-weight: 600; font-size: 20px; }
+  .exp-body ul { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; color: var(--muted-2); font-size: 16px; }
+  .exp-body p { color: var(--muted-2); font-size: 16px; }
+
+  /* ---------- KONTAK ---------- */
+  .contact { padding: 96px 24px; background: var(--ink); color: #FFFFFF; }
+  .contact-inner { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+  .contact h2 { font-family: 'Sora', sans-serif; font-weight: 700; font-size: clamp(30px, 4vw, 44px); line-height: 1.15; color: #FFFFFF; }
+  .contact p { font-size: 18px; max-width: 560px; color: #C9D4E3; }
+  .contact-actions { display: flex; flex-wrap: wrap; gap: 12px; padding-top: 8px; }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    padding: 24px; background: #0A1424; color: #9FB3CE;
+    font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <nav class="container nav">
+    <a class="brand" href="#atas">Arraihan Tahta</a>
+    <div class="nav-links">
+      <a href="#tentang">Tentang</a>
+      <a href="#keahlian">Keahlian</a>
+      <a href="#proyek">Proyek</a>
+      <a href="#pengalaman">Pengalaman</a>
+      <a href="#kontak">Kontak</a>
+    </div>
+  </nav>
+  <div class="container hero-inner" id="atas">
+    <div class="hero-text">
+      <div class="eyebrow">DATA SCIENCE &middot; MACHINE LEARNING</div>
+      <h1>Mengubah data mentah menjadi keputusan bisnis yang jelas.</h1>
+      <p class="hero-lede">Saya Arraihan Tahta Ainullah — penulis publikasi ilmiah terindeks GARUDA di bidang machine learning. Saya membersihkan data, menemukan pola, dan menyajikannya dalam dashboard yang mudah dipahami tim non-teknis.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#proyek">Lihat proyek</a>
+        <a class="btn btn-ghost" href="#kontak">Hubungi saya</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <svg viewBox="0 0 360 220" width="100%" role="img" aria-label="Ilustrasi grafik batang dengan garis tren naik">
+        <line x1="10" y1="200" x2="350" y2="200" stroke="#3A5378" stroke-width="2"></line>
+        <rect x="20" y="140" width="34" height="60" rx="4" fill="#2A4468"></rect>
+        <rect x="70" y="105" width="34" height="95" rx="4" fill="#2A4468"></rect>
+        <rect x="120" y="120" width="34" height="80" rx="4" fill="#2A4468"></rect>
+        <rect x="170" y="70" width="34" height="130" rx="4" fill="#2A4468"></rect>
+        <rect x="220" y="90" width="34" height="110" rx="4" fill="#2A4468"></rect>
+        <rect x="270" y="40" width="34" height="160" rx="4" fill="#7FDDE5"></rect>
+        <polyline points="37,130 87,95 137,110 187,60 237,80 287,30" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
+        <circle cx="287" cy="30" r="6" fill="#FFFFFF"></circle>
+      </svg>
+      <div class="hero-card-caption">// dari data mentah ke insight</div>
+    </div>
+  </div>
+</header>
+
+<!-- TENTANG -->
+<section id="tentang" class="section">
+  <div class="container about-grid">
+    <img class="about-photo" src="foto.jpg" alt="Foto Arraihan Tahta Ainullah">
+    <div class="about-text">
+      <h2 class="section-title">Tentang saya</h2>
+      <p>Lulusan S1 Teknik Informatika Universitas Sains dan Teknologi Indonesia (USTI) dengan fokus machine learning dan analisis data. Saya menulis publikasi ilmiah terindeks GARUDA — salah satunya sebagai penulis pertama — dan pernah mengolah data untuk instansi pemerintah (DPMD Dukcapil Provinsi Riau), dari pengumpulan, pemeriksaan, hingga penyajian hasil.</p>
+      <p>Saya selalu mulai dari pertanyaan bisnis sebelum menyentuh data, lalu menutup setiap analisis dengan kesimpulan yang bisa dipertanggungjawabkan dan rekomendasi yang bisa langsung dijalankan — bukan berhenti di grafik.</p>
+      <p class="meta">Lokasi: Pekanbaru, Riau &middot; Terbuka untuk: full-time / freelance / remote</p>
+    </div>
+  </div>
+</section>
+
+<!-- KEAHLIAN -->
+<section id="keahlian" class="section section-alt">
+  <div class="container skills-wrap">
+    <h2 class="section-title">Keahlian</h2>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-label">BAHASA &amp; DATABASE</div>
+        <div class="skill-pills">
+          <span class="pill">Python</span>
+          <span class="pill">R</span>
+          <span class="pill">SQL (MySQL)</span>
+          <span class="pill">Excel</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-label">ANALISIS &amp; MODEL</div>
+        <div class="skill-pills">
+          <span class="pill">pandas</span>
+          <span class="pill">NumPy</span>
+          <span class="pill">scikit-learn</span>
+          <span class="pill">XGBoost</span>
+          <span class="pill">K-Means</span>
+          <span class="pill">SVM</span>
+          <span class="pill">SMOTE</span>
+          <span class="pill">NLP (TF-IDF)</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-label">VISUALISASI</div>
+        <div class="skill-pills">
+          <span class="pill">Tableau</span>
+          <span class="pill">Power BI</span>
+          <span class="pill">Looker Studio</span>
+          <span class="pill">Matplotlib</span>
+          <span class="pill">Seaborn</span>
+          <span class="pill">Plotly</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-label">TOOLS &amp; CARA KERJA</div>
+        <div class="skill-pills">
+          <span class="pill">Git/GitHub</span>
+          <span class="pill">Streamlit</span>
+          <span class="pill">Google Colab</span>
+          <span class="pill">RapidMiner</span>
+          <span class="pill">Data storytelling</span>
+          <span class="pill">Dokumentasi</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROYEK -->
+<section id="proyek" class="section">
+  <div class="container projects-wrap">
+    <div class="projects-head">
+      <h2 class="section-title">Proyek pilihan</h2>
+      <p class="projects-sub">Setiap proyek ditulis sebagai studi kasus: masalah, proses, lalu hasil.</p>
+    </div>
+    <div class="projects-grid">
+
+      <article class="project-card">
+        <div class="project-tools">Python &middot; Streamlit &middot; scikit-learn &middot; Plotly</div>
+        <h3>Dashboard Cluster Persebaran Pendidik SMA di Indonesia</h3>
+        <div class="case-block">
+          <div class="case-label">MASALAH</div>
+          <p class="case-text">Bagaimana memetakan disparitas rasio pendidik dan peserta didik antar kabupaten/kota se-Indonesia agar temuan mudah ditelaah pemangku kebijakan?</p>
+        </div>
+        <div class="case-block">
+          <div class="case-label">PROSES</div>
+          <p class="case-text">Mengolah 1.529 data SMA (Kemendikdasmen 2025) mengikuti kerangka CRISP-DM: membersihkan 13 baris bernilai Infinity/NaN, membentuk 4 variabel rasio, menstandarkan fitur dengan StandardScaler, lalu K-Means dengan k = 4 dari Elbow Method. Hasilnya disajikan sebagai dashboard Streamlit interaktif dengan profil cluster, radar karakteristik, dan unduhan hasil.</p>
+        </div>
+        <div class="case-block">
+          <div class="case-label">HASIL</div>
+          <p class="case-text">Silhouette 0,358 &middot; Davies-Bouldin 0,84 &middot; Calinski-Harabasz 905,9. Cluster 2 (12 wilayah) memiliki rasio pendidik terhadap peserta didik 3,06 — sekitar 7–10 kali cluster lain — dan menjadi temuan utama untuk penelaahan pemerataan pendidik.</p>
+        </div>
+        <a class="project-link" href="https://github.com/tahta-id/Project-tahta" target="_blank" rel="noopener">Lihat di GitHub &rarr;</a>
+      </article>
+
+      <article class="project-card">
+        <div class="project-tools">Python &middot; TF-IDF &middot; SVM &middot; XGBoost</div>
+        <h3>Klasifikasi Sentimen Ulasan Uber: SVM vs XGBoost</h3>
+        <div class="case-block">
+          <div class="case-label">MASALAH</div>
+          <p class="case-text">Algoritma mana yang paling akurat mengklasifikasikan opini publik terhadap aplikasi Uber dari teks ulasan bebas?</p>
+        </div>
+        <div class="case-block">
+          <div class="case-label">PROSES</div>
+          <p class="case-text">2.000 ulasan (1.456 positif, 492 negatif, 52 netral) diproses dengan text preprocessing dan TF-IDF, lalu dibandingkan SVM vs XGBoost — dengan dan tanpa SMOTE — pada tiga rasio split data.</p>
+        </div>
+        <div class="case-block">
+          <div class="case-label">HASIL</div>
+          <p class="case-text">SVM mencapai akurasi terbaik 94%; XGBoost naik dari 91% ke 94% setelah SMOTE pada split 90:10. Dipublikasikan di JITEK Vol. 5 No. 1 (2025).</p>
+        </div>
+        <a class="project-link" href="https://doi.org/10.55606/jitek.v5i1.5735" target="_blank" rel="noopener">Baca publikasi &rarr;</a>
+      </article>
+
+      <article class="project-card">
+        <div class="project-tools">Python &middot; MikroTik API &middot; RSA</div>
+        <h3>Sistem Manajemen Pengguna Jaringan MikroTik + RSA Cipher</h3>
+        <div class="case-block">
+          <div class="case-label">MASALAH</div>
+          <p class="case-text">Bagaimana mengelola pengguna jaringan MikroTik dengan aman tanpa bergantung pada database relasional?</p>
+        </div>
+        <div class="case-block">
+          <div class="case-label">PROSES</div>
+          <p class="case-text">Membangun sistem Python berbasis MikroTik API dengan model Waterfall: login admin, penambahan user, profil user, dan bypass device. Data disimpan dalam JSON, pesan diamankan dengan kriptosistem hybrid RSA.</p>
+        </div>
+        <div class="case-block">
+          <div class="case-label">HASIL</div>
+          <p class="case-text">Enkripsi dan dekripsi RSA berhasil pada variasi panjang pesan dan kunci. Dipublikasikan di JOCOTIS Vol. 1 No. 4 (Juni 2024) sebagai penulis pertama.</p>
+        </div>
+        <a class="project-link" href="https://jurnal.ittc.web.id/index.php/jct/article/view/592" target="_blank" rel="noopener">Baca publikasi &rarr;</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- PENGALAMAN & PENDIDIKAN -->
+<section id="pengalaman" class="section section-alt">
+  <div class="container exp-wrap">
+    <h2 class="section-title">Pengalaman &amp; pendidikan</h2>
+    <div class="exp-list">
+
+      <div class="exp-row">
+        <div class="exp-date">Agu 2025 – Sep 2025</div>
+        <div class="exp-body">
+          <h3>Data Intern &middot; DPMD Dukcapil Provinsi Riau</h3>
+          <ul>
+            <li>Mengumpulkan, memeriksa, dan membersihkan data untuk kebutuhan analisis, termasuk preprocessing agar data siap diolah.</li>
+            <li>Menganalisis data dan mendokumentasikan proses pengolahan serta hasilnya sebagai acuan kerja tim.</li>
+            <li>Memenuhi kebutuhan data instansi bersama tim, dari pengumpulan data hingga penyajian hasil analisis.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-row">
+        <div class="exp-date">2022 – 2024</div>
+        <div class="exp-body">
+          <h3>Ketua Bidang INFOKOM &middot; HIMAPPI</h3>
+          <ul>
+            <li>Memimpin tim konten dan dokumentasi serta mengelola publikasi kegiatan dan penyampaian informasi organisasi kepada anggota melalui media digital.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-row">
+        <div class="exp-date">2022 – 2026</div>
+        <div class="exp-body">
+          <h3>S1 Teknik Informatika &middot; Universitas Sains dan Teknologi Indonesia (USTI)</h3>
+          <p>IPK 3,41/4,00. Sertifikasi: Associate Data Scientist + Python (Nasional), Data Preparation in Data Science using R (DQLab), Pengenalan Data Science dan Pemanfaatannya di Berbagai Sektor (Digital Talent Scholarship).</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- KONTAK -->
+<section id="kontak" class="contact">
+  <div class="container contact-inner">
+    <h2>Punya data yang butuh dijawab?</h2>
+    <p>Saya terbuka untuk peran data analyst / data scientist dan proyek freelance. Kirim pesan singkat tentang kebutuhan Anda.</p>
+    <div class="contact-actions">
+      <a class="btn btn-primary" href="mailto:arraihantahta1701@gmail.com">arraihantahta1701@gmail.com</a>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/arraihan-tahta-ainullah-065855290/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn btn-ghost" href="https://github.com/tahta-id" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>&copy; 2026 Arraihan Tahta Ainullah. Dibangun dengan data dan kopi.</footer>
+
+</body>
+</html>
